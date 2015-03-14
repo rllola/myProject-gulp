@@ -1,0 +1,6 @@
+.vagrant
+node_modules
+app/assets/bower
+.sass-cache
+app/assets/styles/*.css
+.npm-debug.log

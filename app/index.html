@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title ng-bind="title">My Project</title>
+    	<meta charset="utf-8" />
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<!-- Setting For Relative Links -->
+		<base href="/">
+
+		<link href="assets/styles/styles.css" rel="stylesheet" type="text/css">
+
+		<!-- bower:css -->
+		<link rel="stylesheet" href="assets/bower/bootstrap/dist/css/bootstrap.css" />
+		<!-- endbower -->
+	</head>
+
+	<body ng-app="app">
+		<div ui-view=""></div>
+
+	<!-- bower:js -->
+	<script src="assets/bower/jquery/dist/jquery.js"></script>
+	<script src="assets/bower/angular/angular.js"></script>
+	<script src="assets/bower/angular-touch/angular-touch.js"></script>
+	<script src="assets/bower/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="assets/bower/angular-ui-router/release/angular-ui-router.js"></script>
+	<!-- endbower -->
+	<script src="app.module.js"></script>
+	<script src="app.route.js"></script>
+	<script src="features/home/home.module.js"></script>
+	<script src="features/home/home.controller.js"></script>
+	<script src="features/dashboard/dashboard.module.js"></script>
+	<script src="features/dashboard/dashboard.controller.js"></script>
+	</body>
+</html>
