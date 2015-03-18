@@ -6,7 +6,7 @@
         .controller('HomeController', HomeController);
 
     function HomeController() {
-        console.log('Welcome');
+        console.log('===== HomeController =====');
     }
 
 })();

@@ -6,7 +6,7 @@
         .controller('DashboardController', DashboardController);
 
     function DashboardController() {
-        console.log('Welcome');
+        console.log('===== DashboardController =====');
     }
 
 })();

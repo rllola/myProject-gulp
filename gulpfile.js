@@ -15,6 +15,7 @@ var report      = './report/';
 var app         = './app/';
 var bower       = { directory : app + 'assets/bower/', json : './bower.json'};
 var jsFiles     = ['./app/features/**/*.js','./app/shared/**/*.js','./app/*.js'];
+var stylesFiles  = ['app/assets/styles/*.scss']
 
 //TODO : Create a tasks directory and several gulp.task file because this gulpfile isn't pretty : picky-gulp example
 
@@ -68,7 +69,7 @@ gulp.task('jscs', function () {
  */
 gulp.task('sass', function() {
 	console.log('==== Sass task ====');
-    return gulp.src('app/assets/styles/*.scss')
+    return gulp.src(stylesFiles)
         .pipe(sass())
         .pipe(gulp.dest('app/assets/styles'))
         .pipe(reload({stream: true}));
@@ -84,7 +85,7 @@ gulp.task('go', ['wiredep','sass', 'jshint', 'jscs'], function() {
         server: './app'
     });
 
-    gulp.watch('app/styles/*.scss', ['sass']);
+    gulp.watch(stylesFiles, ['sass']);
     gulp.watch(jsFiles, ['jshint']);
     gulp.watch(app + '*.html').on('change', reload);
 });

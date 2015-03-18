@@ -4,3 +4,4 @@ app/assets/bower
 .sass-cache
 app/assets/styles/*.css
 .npm-debug.log
+report
