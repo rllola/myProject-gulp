@@ -7,6 +7,7 @@ var wiredep     = require('wiredep').stream;
 var reload      = browserSync.reload;
 var taskListing = require('gulp-task-listing');
 var plato       = require('plato');
+//var ngAnnotate  = require('gulp-ng-annotate');
 
 // Constants path. Reusable and easy to change for everywhere !
 var root        = './';
@@ -15,7 +16,8 @@ var report      = './report/';
 var app         = './app/';
 var bower       = { directory : app + 'assets/bower/', json : './bower.json'};
 var jsFiles     = ['./app/features/**/*.js','./app/shared/**/*.js','./app/*.js'];
-var stylesFiles  = ['app/assets/styles/*.scss']
+var stylesFiles = ['app/assets/styles/*.scss'];
+var htmlFiles   = ['./app/index.html','./app/features/**/*.html', './app/shared/**/*.html'];
 
 //TODO : Create a tasks directory and several gulp.task file because this gulpfile isn't pretty : picky-gulp example
 
@@ -80,6 +82,14 @@ gulp.task('sass', function() {
  * @return {Stream}
  */
 gulp.task('go', ['wiredep','sass', 'jshint', 'jscs'], function() {
+    var karma = require('karma').server;
+
+    karma.start({
+        configFile: __dirname + '/karma.conf.js',
+        exclude: [],
+        singleRun: false
+    }, null);
+
 	console.log('==== Starting dev server ====');
     browserSync({
         server: './app'
@@ -104,17 +114,57 @@ gulp.task('plato', function() {
         var overview = plato.getOverviewReport(report);
         console.log(overview.summary);
         browserSync({
-            server: './report'
+            server: './report/plato',
+            ui: false
         });
-        console.log('Browse to http://localhost:3000/ to see Plato results');
     };
 
-    plato.inspect(jsFiles, report, options, platoCompleted);
+    plato.inspect(jsFiles, report+'plato/', options, platoCompleted);
 });
 
 gulp.task('doc', function() {
     // To be continued... Because fucking dgeni doesn't work !
 });
+
+/**
+ * Launch test and coverage with karma and jasmine
+ */
+gulp.task('test', function() {
+    console.log('==== Test task ====');
+    console.log('Launching test server');
+    var excludeFiles = [];
+    var karma = require('karma').server;
+
+    karma.start({
+        configFile: __dirname + '/karma.conf.js',
+        exclude: excludeFiles,
+        singleRun: true
+    }, karmaCompleted);
+
+    ////////////////
+
+    function karmaCompleted(karmaResult) {
+        console.log('Karma completed');
+        if (karmaResult === 1) {
+            console.log('karma: tests failed with code ' + karmaResult);
+        } else {
+            /*browserSync({
+                server: './report/',
+                ui: false
+            });*/
+            console.log('Browse to http://localhost:3000/ to see the test unit results');
+        }
+    }
+});
+
+/**
+ * Build ! Minify, uglify, ...
+ * @return {Stream}
+ */
+gulp.task('build', function () {
+    return null;
+});
+
 
 /**
  * Default useless task
