@@ -84,11 +84,12 @@ gulp.task('sass', function() {
 gulp.task('go', ['wiredep','sass', 'jshint', 'jscs'], function() {
     var karma = require('karma').server;
 
-    karma.start({
+    /*karma.start({
         configFile: __dirname + '/karma.conf.js',
         exclude: [],
         singleRun: false
-    }, null);
+    }, null);*/
+    // Test on changes .... not sure good to pus it here...
 
 	console.log('==== Starting dev server ====');
     browserSync({
@@ -152,7 +153,7 @@ gulp.task('test', function() {
                 server: './report/',
                 ui: false
             });*/
-            console.log('Browse to http://localhost:3000/ to see the test unit results');
+            //console.log('Browse to http://localhost:3000/ to see the test unit results');
         }
     }
 });
