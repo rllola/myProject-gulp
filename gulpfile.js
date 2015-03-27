@@ -7,6 +7,9 @@ var wiredep     = require('wiredep').stream;
 var reload      = browserSync.reload;
 var taskListing = require('gulp-task-listing');
 var plato       = require('plato');
+var compass     = require('gulp-compass');
+var plumber     = require('gulp-plumber');
+var minify      = require('gulp-minify-css');
 //var ngAnnotate  = require('gulp-ng-annotate');
 
 // Constants path. Reusable and easy to change for everywhere !
@@ -16,7 +19,7 @@ var report      = './report/';
 var app         = './app/';
 var bower       = { directory : app + 'assets/bower/', json : './bower.json'};
 var jsFiles     = ['./app/features/**/*.js','./app/shared/**/*.js','./app/*.js'];
-var stylesFiles = ['app/assets/styles/*.scss'];
+var stylesFiles = ['app/assets/styles/*.scss', './app/features/**/*.scss'];
 var htmlFiles   = ['./app/index.html','./app/features/**/*.html', './app/shared/**/*.html'];
 
 //TODO : Create a tasks directory and several gulp.task file because this gulpfile isn't pretty : picky-gulp example
@@ -52,7 +55,8 @@ gulp.task('jshint', function () {
 	console.log('==== Jshint task ====');
   	return gulp.src(jsFiles)
     	.pipe(jshint('.jshintrc'))
-    	.pipe(jshint.reporter('jshint-stylish'), {verbose: true});
+    	.pipe(jshint.reporter('jshint-stylish'), {verbose: true})
+        .pipe(reload({stream: true}));
 });
 
 /**
@@ -62,7 +66,15 @@ gulp.task('jshint', function () {
 gulp.task('jscs', function () {
 	console.log('==== Jscs task ====');
   	return gulp.src(jsFiles)
-    	.pipe(jscs());
+        .pipe(plumber({
+            errorHandler: function (error) {
+            console.log(error.message);
+            this.emit('end');
+        }}))
+    	.pipe(jscs())
+        .on('error', function(err) {
+        // Would like to catch the error here
+        });
 });
 
 /**
@@ -77,12 +89,36 @@ gulp.task('sass', function() {
         .pipe(reload({stream: true}));
 });
 
+
+gulp.task('compass', function() {
+    console.log('==== Compass task ====');
+    return gulp.src(stylesFiles)
+        .pipe(plumber({
+            errorHandler: function (error) {
+            console.log(error.message);
+            this.emit('end');
+        }}))
+        .pipe(compass({
+            css: 'app/assets/styles',
+            sass: 'app/assets/styles',
+            image: 'app/assets/img',
+            //Not needed because download with bower
+            //require: ['bootstrap-sass']
+        }))
+        .on('error', function(err) {
+        // Would like to catch the error here
+        })
+        .pipe(gulp.dest('app/assets/styles'))
+        .pipe(reload({stream: true}));
+
+});
+
 /**
  * Static Server + watching scss/html files + watching jshint
  * @return {Stream}
  */
-gulp.task('go', ['wiredep','sass', 'jshint', 'jscs'], function() {
-    var karma = require('karma').server;
+gulp.task('go', ['wiredep','compass', 'jshint', 'jscs'], function() {
+    //var karma = require('karma').server;
 
     /*karma.start({
         configFile: __dirname + '/karma.conf.js',
@@ -96,9 +132,9 @@ gulp.task('go', ['wiredep','sass', 'jshint', 'jscs'], function() {
         server: './app'
     });
 
-    gulp.watch(stylesFiles, ['sass']);
-    gulp.watch(jsFiles, ['jshint']);
-    gulp.watch(app + '*.html').on('change', reload);
+    gulp.watch(stylesFiles, ['compass']);
+    gulp.watch(jsFiles, ['jscs','jshint']);
+    gulp.watch('./app/**/*.html').on('change', reload);
 });
 
 /**

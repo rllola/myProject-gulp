@@ -5,8 +5,13 @@
         .module('app.dashboard')
         .controller('DashboardController', DashboardController);
 
-    function DashboardController() {
-        console.log('===== DashboardController =====');
+    DashboardController.$inject = ['$log'];
+
+    /* @ngInject */
+    function DashboardController($log) {
+        var dashboard = this;
+
+        $log.info('===== DashboardController =====');
     }
 
 })();

@@ -5,8 +5,11 @@
         .module('app.home')
         .controller('HomeController', HomeController);
 
-    function HomeController() {
-        console.log('===== HomeController =====');
+    HomeController.$inject = ['$log'];
+
+    /* @ngInject */
+    function HomeController($log) {
+        $log.info('===== HomeController =====');
     }
 
 })();

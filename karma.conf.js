@@ -21,7 +21,7 @@ module.exports = function(config) {
             './app/assets/bower/jquery/dist/jquery.js',
             './app/assets/bower/angular/angular.js',
             './app/assets/bower/angular-touch/angular-touch.js',
-            './app/assets/bower/bootstrap/dist/js/bootstrap.js',
+            './app/assets/bower/bootstrap-sass/assets/javascripts/bootstrap.js',
             './app/assets/bower/angular-ui-router/release/angular-ui-router.js',
             './app/assets/bower/angular-mocks/angular-mocks.js',
 

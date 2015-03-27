@@ -2,5 +2,5 @@
     'use strict';
 
     angular
-        .module('shared.login', []);
+        .module('shared.login', ['ngResource']);
 }());

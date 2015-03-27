@@ -1,0 +1,25 @@
+/**
+ * Navbar SCSS
+ *
+ * @author : Lola Dam;
+ */
+
+#side-bar {
+    background-color: $gray-lighter;
+    height: 100vh;
+    padding-top: 50px;
+    padding-left: 0;
+    padding-right: 0;
+
+    .list-group-item {
+        background-color: transparent;
+        border : none;
+        padding-top: 5px;
+    }
+
+}
+
+#dashboard {
+    padding-top: 50px;
+}
+

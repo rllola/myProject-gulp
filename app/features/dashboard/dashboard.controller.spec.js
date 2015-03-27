@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe('DashboardController', function() {
+describe('dashboardController', function() {
 
     var scope,
         controller;

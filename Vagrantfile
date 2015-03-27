@@ -11,6 +11,9 @@ apt-get update
 apt-get install -y nodejs
 apt-get install -y phantomjs firefox
 npm install npm -g
+apt-get install -y ruby-compass
+gem install compass
+gem install bootstrap-sass
 npm install -g bower
 npm install -g gulp
 SCRIPT

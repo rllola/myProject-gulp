@@ -5,6 +5,7 @@
  */
 
 .navbar {
+
     #logo {
         width : 30px;
         margin : auto;
@@ -13,4 +14,12 @@
     .brand-title {
         color : white;
     }
+
+    .navbar-collapse {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
 }
+
+

@@ -2,21 +2,18 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title ng-bind="title">My Project</title>
+		<title>My Project</title>
     	<meta charset="utf-8" />
     	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
     	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
 		<!-- Setting For Relative Links -->
 		<base href="/">
-
-		<link href="assets/styles/styles.css" rel="stylesheet" type="text/css">
-
 		<!-- bower:css -->
-		<link rel="stylesheet" href="assets/bower/bootstrap/dist/css/bootstrap.css" />
 		<!-- endbower -->
+        <link href="assets/styles/styles.css" rel="stylesheet" type="text/css">
 	</head>
     <header class="clearfix">
-        <navbar-directive navline="[{title: 'Home',text: 'Home',link: '/'},{title: 'Dashboard',text: 'Dashboard',link: '/dashboard'} ]"></navbar-directive>
+        <navbar-directive navline="[{text: 'Home',link: '/', state: 'home'},{text: 'Dashboard',link: '/dashboard', state: 'dashboard'}, {text: 'Login',link: '/login', state: 'login'}, {text: 'Register',link: '/register', state: 'register'} ]"></navbar-directive>
     </header>
 	<body ng-app="app">
 		<div class="main" ui-view=""></div>
@@ -25,15 +22,21 @@
 	<script src="assets/bower/jquery/dist/jquery.js"></script>
 	<script src="assets/bower/angular/angular.js"></script>
 	<script src="assets/bower/angular-touch/angular-touch.js"></script>
-	<script src="assets/bower/bootstrap/dist/js/bootstrap.js"></script>
 	<script src="assets/bower/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="assets/bower/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
+	<script src="assets/bower/angular-resource/angular-resource.js"></script>
 	<!-- endbower -->
 	<script src="app.module.js"></script>
 	<script src="app.route.js"></script>
 	<script src="features/home/home.module.js"></script>
 	<script src="features/home/home.controller.js"></script>
+
+    <script src="features/dashboard/messages/messages.module.js"></script>
+    <script src="features/dashboard/messages/messages.controller.js"></script>
+
 	<script src="features/dashboard/dashboard.module.js"></script>
-	<script src="features/dashboard/dashboard.controller.js"></script>
+    <script src="features/dashboard/dashboard.controller.js"></script>
+
 
     <!-- Shared scripts -->
     <script src="shared/shared.module.js"></script>
@@ -41,12 +44,12 @@
     <!-- Navbar Directive script -->
     <script src="shared/navbar/navbar.module.js"></script>
     <script src="shared/navbar/navbar.directive.js"></script>
-    <script src="shared/navbar/navbar.controller.js"></script>
     <!-- END Navbar Directive script -->
 
     <!-- Login Service script -->
     <script src="shared/login/login.module.js"></script>
-    <script src="shared/login/login.service.js"></script>
+    <script src="shared/login/login.directive.js"></script>
+    <script src="shared/login/authentication.service.js"></script>
     <!-- END Login Service script -->
 
     <!-- END Shared scripts -->

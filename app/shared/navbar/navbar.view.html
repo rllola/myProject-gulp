@@ -8,10 +8,10 @@
         </a>
     </div>
     <div class="navbar-collapse collapse">
-        <div class="pull-right navbar-logo">
-            <ul class="nav navbar-nav pull-right">
-                <li ng-repeat="navline in navbar.navline">
-                    <a ng-href="{{navline.link}}">
+        <div class="navbar-logo">
+            <ul class="nav navbar-nav navbar-right">
+                <li ui-sref-active="active" ng-repeat="navline in navbar.navline">
+                    <a ui-sref="{{navline.state}}" ng-href="{{navline.link}}">
                         {{navline.text}}
                     </a>
                 </li>

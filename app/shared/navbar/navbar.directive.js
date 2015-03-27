@@ -3,9 +3,10 @@
 
     angular
         .module('shared.navbar')
-        .directive('navbarDirective', NavbarDirective);
+        .directive('navbarDirective', navbarDirective);
+        /* <div navbar-directive>...</div>*/
 
-    function NavbarDirective () {
+    function navbarDirective () {
         var directive = {
             bindToController: true,
             controller: NavbarController,
@@ -14,14 +15,15 @@
             scope: {
                 'navline': '='
             },
-            templateUrl: 'shared/navbar/navbarTemplate.html'
+            templateUrl: 'shared/navbar/navbar.view.html'
         };
 
-        function NavbarController() {
+        NavbarController.$inject = ['$log'];
 
+        function NavbarController($log) {
             var navbar = this;
 
-            console.log('===== NavbarController =====');
+            $log.info('===== NavbarController =====');
         }
 
         return directive;
