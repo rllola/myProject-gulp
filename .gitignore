@@ -1,7 +1,7 @@
 .vagrant
 node_modules
-app/assets/bower
+client/assets/bower
 .sass-cache
-app/assets/styles/*.css
+client/assets/styles/*.css
 .npm-debug.log
 report

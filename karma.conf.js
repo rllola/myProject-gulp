@@ -18,19 +18,21 @@ module.exports = function(config) {
         // list of files / patterns to load in the browser
         files: [
 
-            './app/assets/bower/jquery/dist/jquery.js',
-            './app/assets/bower/angular/angular.js',
-            './app/assets/bower/angular-touch/angular-touch.js',
-            './app/assets/bower/bootstrap-sass/assets/javascripts/bootstrap.js',
-            './app/assets/bower/angular-ui-router/release/angular-ui-router.js',
-            './app/assets/bower/angular-mocks/angular-mocks.js',
+            './client/assets/bower/jquery/dist/jquery.js',
+            './client/assets/bower/angular/angular.js',
+            './client/assets/bower/angular-touch/angular-touch.js',
+            './client/assets/bower/bootstrap-sass/assets/javascripts/bootstrap.js',
+            './client/assets/bower/angular-ui-router/release/angular-ui-router.js',
+            './client/assets/bower/angular-mocks/angular-mocks.js',
 
-            './app/app.module.js',
-            './app/app.route.js',
+            './client/app/app.module.js',
+            './client/app/app.route.js',
 
-            './app/features/**/*.module.js',
-            './app/features/**/*.controller.js',
-            './app/features/**/*.controller.spec.js'
+            './client/app/core/core.module.js',
+
+            './client/app/features/**/*.module.js',
+            './client/app/features/**/*.controller.js',
+            './client/app/features/**/*.controller.spec.js'
             //'./app/shared/**/*.js'
         ],
 
@@ -40,9 +42,7 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'app/!(*.spec).js': 'coverage',
-            'app/features/**/!(*.spec).js': 'coverage',
-            'app/dashboard/**/!(*.spec).js': 'coverage',
+            'client/app/!(*.spec).js': 'coverage'
         },
 
         // test results reporter to use

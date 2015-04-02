@@ -1,26 +1,37 @@
-var gulp        = require('gulp');
-var jshint      = require('gulp-jshint');
-var jscs        = require('gulp-jscs');
-var browserSync = require('browser-sync');
-var sass        = require('gulp-sass');
-var wiredep     = require('wiredep').stream;
-var reload      = browserSync.reload;
-var taskListing = require('gulp-task-listing');
-var plato       = require('plato');
-var compass     = require('gulp-compass');
-var plumber     = require('gulp-plumber');
-var minify      = require('gulp-minify-css');
+var gulp          = require('gulp');
+var jshint        = require('gulp-jshint');
+var jscs          = require('gulp-jscs');
+var browserSync   = require('browser-sync');
+var sass          = require('gulp-sass');
+var wiredep       = require('wiredep').stream;
+var reload        = browserSync.reload;
+var taskListing   = require('gulp-task-listing');
+var plato         = require('plato');
+var compass       = require('gulp-compass');
+var plumber       = require('gulp-plumber');
+var imagemin      = require('gulp-imagemin');
+var rev           = require('gulp-rev');
+var revReplace    = require('gulp-rev-replace');
+var useref        = require('gulp-useref');
+var filter        = require('gulp-filter');
+var uglify        = require('gulp-uglify');
+var csso          = require('gulp-csso');
+var del           = require('del');
+var uncss         = require('gulp-uncss');
+var templateCache = require('gulp-angular-templatecache');
+var inject        = require('gulp-inject');
+var Dgeni         = require('dgeni');
 //var ngAnnotate  = require('gulp-ng-annotate');
 
 // Constants path. Reusable and easy to change for everywhere !
 var root        = './';
-var temp        = './.tmp/';
+var temp        = './client/app/.tmp/';
 var report      = './report/';
-var app         = './app/';
+var app         = './client/app/';
 var bower       = { directory : app + 'assets/bower/', json : './bower.json'};
-var jsFiles     = ['./app/features/**/*.js','./app/shared/**/*.js','./app/*.js'];
-var stylesFiles = ['app/assets/styles/*.scss', './app/features/**/*.scss'];
-var htmlFiles   = ['./app/index.html','./app/features/**/*.html', './app/shared/**/*.html'];
+var jsFiles     = [ app + 'features/**/*.js', app + 'shared/**/*.js', app + '*.js'];
+var stylesFiles = ['./client/assets/styles/*.scss'];
+var htmlFiles   = ['./client/index.html', app + 'features/**/*.html', app + 'shared/**/*.html'];
 
 //TODO : Create a tasks directory and several gulp.task file because this gulpfile isn't pretty : picky-gulp example
 
@@ -85,11 +96,14 @@ gulp.task('sass', function() {
 	console.log('==== Sass task ====');
     return gulp.src(stylesFiles)
         .pipe(sass())
-        .pipe(gulp.dest('app/assets/styles'))
+        .pipe(gulp.dest('client/assets/styles'))
         .pipe(reload({stream: true}));
 });
 
-
+/**
+ * Compile scss into CSS & auto-inject into browsers
+ * @return {Stream}
+ */
 gulp.task('compass', function() {
     console.log('==== Compass task ====');
     return gulp.src(stylesFiles)
@@ -99,16 +113,16 @@ gulp.task('compass', function() {
             this.emit('end');
         }}))
         .pipe(compass({
-            css: 'app/assets/styles',
-            sass: 'app/assets/styles',
-            image: 'app/assets/img',
+            css: 'client/assets/styles',
+            sass: 'client/assets/styles',
+            image: 'client/assets/img',
             //Not needed because download with bower
             //require: ['bootstrap-sass']
         }))
         .on('error', function(err) {
         // Would like to catch the error here
         })
-        .pipe(gulp.dest('app/assets/styles'))
+        .pipe(gulp.dest('client/assets/styles'))
         .pipe(reload({stream: true}));
 
 });
@@ -129,12 +143,12 @@ gulp.task('go', ['wiredep','compass', 'jshint', 'jscs'], function() {
 
 	console.log('==== Starting dev server ====');
     browserSync({
-        server: './app'
+        server: './client'
     });
 
     gulp.watch(stylesFiles, ['compass']);
     gulp.watch(jsFiles, ['jscs','jshint']);
-    gulp.watch('./app/**/*.html').on('change', reload);
+    gulp.watch('./client/**/*.html').on('change', reload);
 });
 
 /**
@@ -160,8 +174,10 @@ gulp.task('plato', function() {
 });
 
 gulp.task('doc', function() {
-    // To be continued... Because fucking dgeni doesn't work !
+  var dgeni = new Dgeni([require('./docs/dgeni-example')]);
+  return dgeni.generate();
 });
+
 
 /**
  * Launch test and coverage with karma and jasmine
@@ -195,13 +211,132 @@ gulp.task('test', function() {
 });
 
 /**
- * Build ! Minify, uglify, ...
+ * Clean ! Clean build folder
  * @return {Stream}
  */
-gulp.task('build', function () {
-    return null;
+gulp.task('clean:build', function (done) {
+    del('./build/**/*',done);
 });
 
+/**
+ * Clean ! Clean build folder
+ * @return {Stream}
+ */
+gulp.task('clean:tmp', function (done) {
+    del( temp,done);
+});
+
+
+/**
+ * Create $templateCache from the html templates
+ * @return {Stream}
+ */
+gulp.task('templatecache', ['clean:tmp'], function() {
+    var filenameTemplate = 'templates.js';
+    var optionsTemplate = {
+                            module: 'app.core',
+                            root: 'app/',
+                            standAlone: false
+                        };
+    //Need to be change to create automaticaly the templates modules and load it in app.core
+    return gulp.src('./client/app/**/*.view.html')
+        .pipe(templateCache(
+            filenameTemplate,
+            optionsTemplate
+        ))
+        .pipe(gulp.dest(temp));
+});
+
+/**
+ * Minify and concat css
+ * @return {Stream}
+ */
+gulp.task('build:css', function (done) {
+    return gulp.src('./client/assets/styles/styles.css')
+        .pipe(uncss({
+            html: ['./client/index.html', './client/app/**/*.html']
+        }))
+        .pipe(csso())
+        .pipe(gulp.dest('./build/assets/styles/'));
+});
+
+/**
+ * Clean ! Clean build fonts folder
+ * @return {Stream}
+ */
+gulp.task('clean:fonts', function (done) {
+    del('./build/assets/fonts/*.*',done);
+});
+
+/**
+ * Copy fonts
+ * @return {Stream}
+ */
+gulp.task('build:fonts', ['clean:fonts'], function() {
+    return gulp
+        .src('./client/assets/fonts/*')
+        .pipe(gulp.dest('./build/assets/fonts'));
+});
+
+/**
+ * Clean ! Clean build inages
+ * @return {Stream}
+ */
+gulp.task('clean:images', function (done) {
+    del('./build/assets/img/*.*',done);
+});
+
+/**
+ * Compress images
+ * @return {Stream}
+ */
+gulp.task('build:images', ['clean:images'], function() {
+    return gulp
+        .src('./client/assets/img/*')
+        .pipe(imagemin({optimizationLevel: 4}))
+        .pipe(gulp.dest('./build/assets/img'));
+});
+
+/**
+ * Build ! Minify, uglify, uncss, replace name, and some other awesome sjit...
+ */
+gulp.task('build', ['clean:build', 'build:fonts', 'build:images', 'templatecache', 'test'], function() {
+  var jsLibFilter = filter('**/lib.js');
+  var jsAppFilter = filter('**/app.js');
+  var cssFilter = filter('**/styles.css');
+  var templateCache = temp + 'templates.js';
+  console.log(templateCache)
+  var userefAssets = useref.assets();
+
+  return gulp.src('./client/index.html')
+    .pipe(plumber())
+    .pipe(inject(gulp.src(templateCache, {read: false}), {relative:true, name: 'templates'}))
+    .pipe(userefAssets)      // Concatenate with gulp-useref
+    .pipe(jsLibFilter)
+    /*.pipe(uglify())  */           // Minify any javascript sources
+    .pipe(jsLibFilter.restore())
+    .pipe(jsAppFilter)
+    /*.pipe(uglify())  */           // Minify any javascript sources
+    .pipe(jsAppFilter.restore())
+    .pipe(cssFilter)
+    .pipe(uncss({
+        html: ['./client/index.html', './client/app/**/*.html']
+    }))
+    .pipe(csso())               // Minify any CSS sources
+    .pipe(cssFilter.restore())
+    .pipe(rev())                // Rename the concatenated files
+    .pipe(userefAssets.restore())
+    .pipe(useref())
+    .pipe(revReplace())       // Substitute in new filenames
+    .pipe(gulp.dest('./build'));
+});
+
+gulp.task('go:build', ['build'], function(){
+    console.log('==== Starting build server ====');
+    browserSync({
+        server: './build'
+    });
+});
 
 /**
  * Default useless task

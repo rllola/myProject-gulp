@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>My Project</title>
+    	<meta charset="utf-8" />
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<!-- Setting For Relative Links -->
+		<base href="/">
+        <!-- build:css styles/lib.css -->
+		<!-- bower:css -->
+		<!-- endbower -->
+        <!-- endbuild -->
+
+        <!-- build:css assets/styles/styles.css-->
+        <link href="assets/styles/styles.css" rel="stylesheet" type="text/css">
+        <!-- endbuild -->
+
+	</head>
+    <header class="clearfix">
+        <navbar-directive navline="[{text: 'Home',link: '/', state: 'home'},{text: 'Dashboard',link: '/dashboard', state: 'dashboard'}, {text: 'Login',link: '/login', state: 'login'}, {text: 'Register',link: '/register', state: 'register'} ]"></navbar-directive>
+    </header>
+	<body ng-app="app">
+		<div class="main" ui-view=""></div>
+
+    <!-- build:js js/lib.js -->
+	<!-- bower:js -->
+	<script src="assets/bower/jquery/dist/jquery.js"></script>
+	<script src="assets/bower/angular/angular.js"></script>
+	<script src="assets/bower/angular-touch/angular-touch.js"></script>
+	<script src="assets/bower/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="assets/bower/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
+	<script src="assets/bower/angular-resource/angular-resource.js"></script>
+	<!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js js/app.js -->
+	<script src="app/app.module.js"></script>
+	<script src="app/app.route.js"></script>
+	<script src="app/features/home/home.module.js"></script>
+	<script src="app/features/home/home.controller.js"></script>
+
+    <script src="app/features/dashboard/messages/messages.module.js"></script>
+    <script src="app/features/dashboard/messages/messages.controller.js"></script>
+
+    <script src="app/features/dashboard/account/account.module.js"></script>
+    <script src="app/features/dashboard/account/account.controller.js"></script>
+
+	<script src="app/features/dashboard/dashboard.module.js"></script>
+    <script src="app/features/dashboard/dashboard.controller.js"></script>
+
+    <!-- Core scripts -->
+    <script src="app/core/core.module.js"></script>
+    <!-- END Core scripts -->
+
+    <!-- Shared scripts -->
+    <script src="app/shared/shared.module.js"></script>
+
+    <!-- Navbar Directive script -->
+    <script src="app/shared/navbar/navbar.module.js"></script>
+    <script src="app/shared/navbar/navbar.directive.js"></script>
+    <!-- END Navbar Directive script -->
+
+    <!-- Login Service script -->
+    <script src="app/shared/login/login.module.js"></script>
+    <script src="app/shared/login/login.directive.js"></script>
+    <script src="app/shared/login/authentication.service.js"></script>
+    <!-- END Login Service script -->
+    <!-- END Shared scripts -->
+
+    <!-- templates:js -->
+    <!-- endinject -->
+
+    <!-- endbuild -->
+	</body>
+</html>

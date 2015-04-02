@@ -1,0 +1,21 @@
+<nav class="navbar navbar-fixed-top navbar-inverse">
+    <div class="navbar-header">
+        <a href="/" class="navbar-brand"><span class="brand-title"><img id="logo" src="./assets/img/logo_simple_white.png"/> DIGITHINK<span></a>
+        <a class="btn navbar-btn navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+    </div>
+    <div class="navbar-collapse collapse">
+        <div class="navbar-logo">
+            <ul class="nav navbar-nav navbar-right">
+                <li ui-sref-active="active" ng-repeat="navline in navbar.navline">
+                    <a ui-sref="{{navline.state}}" ng-href="{{navline.link}}">
+                        {{navline.text}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
