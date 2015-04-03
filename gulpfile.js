@@ -173,12 +173,6 @@ gulp.task('plato', function() {
     plato.inspect(jsFiles, report+'plato/', options, platoCompleted);
 });
 
-gulp.task('doc', function() {
-  var dgeni = new Dgeni([require('./docs/dgeni-example')]);
-  return dgeni.generate();
-});
-
-
 /**
  * Launch test and coverage with karma and jasmine
  */
@@ -335,6 +329,29 @@ gulp.task('go:build', ['build'], function(){
     console.log('==== Starting build server ====');
     browserSync({
         server: './build'
+    });
+});
+
+gulp.task('clean:doc', function(done) {
+    del('build/docs/**/*',done)
+});
+
+
+//This is fucked up ! Dgeni sucks !
+gulp.task('doc', ['clean:doc'], function() {
+  try {
+    var dgeni = new Dgeni([require('./docs/dgeni-conf')]);
+    return dgeni.generate();
+  } catch(x) {
+    console.log(x.stack);
+    throw x;
+  }
+});
+
+gulp.task('go:doc', ['doc'], function(){
+    console.log('==== Starting doc server ====');
+    browserSync({
+        server: './build/docs'
     });
 });
 

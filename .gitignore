@@ -5,3 +5,4 @@ client/assets/bower
 client/assets/styles/*.css
 .npm-debug.log
 report
+build

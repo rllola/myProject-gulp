@@ -1,6 +1,9 @@
 (function() {
     'use strict';
 
+    /**
+     * Module definition
+     */
     angular
         .module('dashboard.account')
         .controller('AccountController', AccountController);

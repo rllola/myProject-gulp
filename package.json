@@ -16,7 +16,7 @@
     "browser-sync": "^2.2.4",
     "canonical-path": "0.0.2",
     "del": "^1.1.1",
-    "dgeni": "^0.4.1",
+    "dgeni": "^0.4.0",
     "dgeni-packages": "^0.10.12",
     "gulp": "^3.8.11",
     "gulp-angular-templatecache": "^1.6.0",
@@ -45,6 +45,7 @@
     "karma-jasmine": "^0.3.5",
     "karma-mocha-reporter": "^1.0.2",
     "karma-phantomjs-launcher": "^0.1.4",
+    "l": "0.0.1",
     "npm": "^2.7.1",
     "plato": "^1.4.0",
     "wiredep": "^2.2.2"
