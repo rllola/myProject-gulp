@@ -1,5 +1,7 @@
 # My Project 
 
+[![Join the chat at https://gitter.im/rllola/myProject-gulp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rllola/myProject-gulp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Standard project start up for webdev with Angular, gulp, bower.
 
 [![Build Status](https://travis-ci.org/rllola/myProject-gulp.svg?branch=master)](https://travis-ci.org/rllola/myProject-gulp)
